@@ -66,23 +66,34 @@ import pytz
 
 
 def create_event(name: str, datetime_start: datetime, timezone_str: str) -> Dict[str, str]:
-    # Write here your code
-    pass
+    tz = pytz.timezone(timezone_str)
+    if datetime_start.tzinfo is None:
+        # Com la data es sense zona horaria, li enganxem la zona de l'esdeveniment
+        datetime_start = tz.localize(datetime_start)
+    else:
+        # si la data ja té zona horària, la traduirem a la zona de l'esdeveniment
+        datetime_start = datetime_start.astimezone(tz)
+    return {
+        "name": name,
+        "datetime_start": datetime_start,
+        "timezone": timezone_str
+    }
 
 
 def time_until_event(event: Dict[str, str]) -> timedelta:
-    # Write here your code
-    pass
+    now = datetime.now(pytz.utc)
+    return event["datetime_start"] - now
 
 
 def change_event_timezone(event: Dict[str, str], new_timezone_str: str) -> Dict[str, str]:
-    # Write here your code
-    pass
+    return create_event(event["name"], event["datetime_start"], new_timezone_str)
 
 
 def find_next_event(events: List[Dict[str, str]]) -> Optional[Dict[str, str]]:
-    # Write here your code
-    pass
+    future_events = [event for event in events if time_until_event(event) > timedelta(0)]
+    if not future_events:
+        return None
+    return min(future_events, key=time_until_event)
 
 
 # Para probar el código, descomenta las siguientes líneas
