@@ -56,24 +56,27 @@ class Task(NamedTuple):
     id: int
     title: str
     status: TaskStatus
-    
-    
+
+
 tasks: Dict[int, Task] = {}
 
 
 def create_task(title: str) -> int:
-    # Write here your code
-    pass
+    task_id = len(tasks) + 1
+    tasks[task_id] = Task(task_id, title, TaskStatus.PENDING)
+    return task_id
 
 
 def change_task_status(task_id: int, new_status: TaskStatus) -> bool:
-    # Write here your code
-    pass
+    if task_id not in tasks:
+        return False
+    tasks[task_id] = tasks[task_id]._replace(status=new_status)
+    return True
 
 
 def list_tasks() -> None:
-    # Write here your code
-    pass
+    for task in tasks.values():
+        print(f"ID: {task.id}, Title: {task.title}, Status: {task.status.value}")
 
 
 # Para probar el código, descomenta las siguientes líneas 
