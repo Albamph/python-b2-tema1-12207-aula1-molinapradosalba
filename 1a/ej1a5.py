@@ -55,29 +55,26 @@ inventory: Dict[Tuple[str, str], Product] = {}
 
 
 def add_product(name: str, category: str, quantity: int, price: float) -> Product:
-    # Complete the code
-    pass
     key = (name, category)
-    if key in :
-        existing_product = 
-        existing_product. += 
-        existing_product. = 
+    if key in inventory:
+        existing_product = inventory[key]
+        existing_product.quantity += quantity
+        existing_product.price = price
     else:
-         = Product
-    return 
+         inventory[key] = Product(name, category, quantity, price)
+    return inventory[key]
 
 
 def list_products() -> str:
-    # Complete the code
-    pass
-    for product in :
-            (f"{product.name} ({product.category}) - {product.quantity} units at ${product.price} each")
-        return
+    product_lines: List[str] = []
+    for product in inventory.values():
+        product_lines.append(
+            f"{product.name} ({product.category}) - {product.quantity} units at ${product.price} each")
+    return "\n".join(product_lines)
 
 
 def find_product(name: str, category: str) -> Optional[Product]:
-    # Write here your code
-    pass
+    return inventory.get((name, category))
 
 
 # Para probar el código, descomenta las siguientes líneas
